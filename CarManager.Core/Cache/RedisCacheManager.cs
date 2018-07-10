@@ -73,6 +73,7 @@ namespace CarManager.Core.Cache
                 foreach (var item in server.Keys())
                 {
                     redisConnection.GetDatabase().KeyDelete(item);
+                    int i;
                 }
             }
         }

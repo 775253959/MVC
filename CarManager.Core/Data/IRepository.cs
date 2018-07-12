@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarManager.Core.Data
 {
-    interface IRepository<T,E> where T:class
+    public interface IRepository<T,E> where T:class
     {
         T GetById(E id);
 

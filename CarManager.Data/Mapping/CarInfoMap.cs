@@ -16,6 +16,7 @@ namespace CarManager.Data.Mapping
             this.HasKey(c=>c.Id);
             this.Property(c=>c.Name).HasMaxLength(20);
             this.Property(c => c.Comment).HasMaxLength(200);
+
         }
     }
 }

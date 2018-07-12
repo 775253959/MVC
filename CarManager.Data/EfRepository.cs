@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CarManager.Core.Data;
 using System.Data.Entity;
+using System.Data;
 
 namespace CarManager.Data
 {
@@ -19,6 +20,13 @@ namespace CarManager.Data
                 return this.dbSet;
             }
         }
+
+
+        public IQueryable<T> Table
+        {
+            get { return this.DbSet; }
+        }
+
 
         public EfRepository(IDbContext dbContext)
         {
@@ -38,6 +46,7 @@ namespace CarManager.Data
             }
             this.DbSet.Add(entity);
             this.dbContext.SaveChanges();
+            
         }
 
         public void Update(T entity)
@@ -59,6 +68,7 @@ namespace CarManager.Data
             this.dbSet.Remove(entity);
             this.dbContext.SaveChanges();
         }
+
 
     }
 }

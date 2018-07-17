@@ -11,6 +11,7 @@ namespace CarManager.Core.Config
     {
         const string RedisCacheConfigPropertyName = "redisCache";
         [ConfigurationProperty(RedisCacheConfigPropertyName)]
+        [ConfigurationCollection(typeof(ApplicationConfig), AddItemName = "ApplicationConfig")]
         public RedisCacheElement redisCacheConfig {
             get { return (RedisCacheElement)base[RedisCacheConfigPropertyName]; }
             set { base[RedisCacheConfigPropertyName] = value; }

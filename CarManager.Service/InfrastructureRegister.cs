@@ -15,7 +15,9 @@ namespace CarManager.Service
 
         public void RegisterTypes(IUnityContainer container)
         {
+            //注册哪种缓存，就使用哪种缓存，不使用就注册空
             container.RegisterType<ICacheManager, RedisCacheManager>();
+            //注册哪种日志就使用哪种日志，不使用就注册空
             container.RegisterType<ILogger,NullLogger>();
         }
     }

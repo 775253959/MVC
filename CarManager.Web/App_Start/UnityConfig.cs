@@ -1,5 +1,8 @@
+using CarManager.Core.Config;
+using CarManager.Core.IOC;
+using CarManager.WebCore.IOC;
 using System;
-
+using System.Configuration;
 using Unity;
 
 namespace CarManager.Web
@@ -10,18 +13,24 @@ namespace CarManager.Web
     public static class UnityConfig
     {
         #region Unity Container
-        private static Lazy<IUnityContainer> container =
-          new Lazy<IUnityContainer>(() =>
-          {
-              var container = new UnityContainer();
-              RegisterTypes(container);
-              return container;
-          });
+        //暂时不要了
+        //private static Lazy<IUnityContainer> container =
+        //  new Lazy<IUnityContainer>(() =>
+        //  {
+        //      var container = new UnityContainer();
+        //      RegisterTypes(container);
+        //      return container;
+        //  });
+
 
         /// <summary>
         /// Configured Unity Container.
         /// </summary>
-        public static IUnityContainer Container = container.Value;
+        public static IUnityContainer GetConfiguredContainer()
+        {
+            RegisterTypes(ServiceContainer.Current);
+            return ServiceContainer.Current;
+        }
         #endregion
 
         /// <summary>
@@ -36,13 +45,21 @@ namespace CarManager.Web
         /// </remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-            // NOTE: To load from web.config uncomment the line below.
-            // Make sure to add a Unity.Configuration to the using statements.
-            // container.LoadConfiguration();
 
-            // TODO: Register your type's mappings here.
-            // container.RegisterType<IProductRepository, ProductRepository>();
-        
+            //初始化注入
+            container.RegisterInstance<IUnityContainer>(container);
+            ITypeSearcher typeFinder = new WebTypeSearcher();
+
+            var config = ConfigurationManager.GetSection("applicationConfig") as ApplicationConfig;
+            container.RegisterInstance<ApplicationConfig>(config);
+
+            var registerTypes = typeFinder.SearchClassesOfType<IDependencyRegister>();
+            foreach (var registerType in registerTypes)
+            {
+                var register = (IDependencyRegister)Activator.CreateInstance(registerType);
+                register.RegisterTypes(container);
+            }
+
         }
     }
 }

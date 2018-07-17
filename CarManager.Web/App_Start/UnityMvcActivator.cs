@@ -16,12 +16,13 @@ namespace CarManager.Web
         /// <summary>
         /// Integrates Unity when the application starts.
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
+            var container = UnityConfig.GetConfiguredContainer();
             FilterProviders.Providers.Remove(FilterProviders.Providers.OfType<FilterAttributeFilterProvider>().First());
-            FilterProviders.Providers.Add(new UnityFilterAttributeFilterProvider(UnityConfig.Container));
+            FilterProviders.Providers.Add(new UnityFilterAttributeFilterProvider(container));
 
-            DependencyResolver.SetResolver(new UnityDependencyResolver(UnityConfig.Container));
+            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
 
             // TODO: Uncomment if you want to use PerRequestLifetimeManager
             // Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(typeof(UnityPerRequestHttpModule));
@@ -32,7 +33,8 @@ namespace CarManager.Web
         /// </summary>
         public static void Shutdown()
         {
-            UnityConfig.Container.Dispose();
+            var container = UnityConfig.GetConfiguredContainer();
+            container.Dispose();
         }
     }
 }

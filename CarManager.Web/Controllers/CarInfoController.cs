@@ -1,4 +1,5 @@
 ﻿using CarManager.Service.CarInfos;
+using CarManager.WebCore.MVC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Web.Mvc;
 
 namespace CarManager.Web.Controllers
 {
-    public class CarInfoController : Controller
+    public class CarInfoController : BaseController
     {
         private readonly ICarInfoService carService;
 
@@ -20,6 +21,10 @@ namespace CarManager.Web.Controllers
         {
             return View(carService.GetCarInfos());
         }
-        public 
+
+        public JsonResult GetCars()
+        {
+            return Json(carService.GetCarInfos(),JsonRequestBehavior.AllowGet);
+        }
     }
 }

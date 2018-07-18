@@ -9,9 +9,9 @@ namespace CarManager.WebCore.MVC
 {
     public class BaseController:Controller
     {
-        protected override JsonResult Json(object data, string contentType, Encoding contentEncoding)
+        protected override JsonResult Json(object data, string contentType, Encoding contentEncoding,JsonRequestBehavior behavior)
         {
-            return new JsonNetRusult() { };
+            return new JsonNetRusult() { Data = data, ContentType = contentType, ContentEncoding = contentEncoding, JsonRequestBehavior = behavior };
         } 
     }
 }
